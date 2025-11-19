@@ -1,0 +1,44 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.tabSize": 2,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.formatDocument": "never"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file"
+  },
+
+  // Disable CSS validation warnings for Tailwind directives
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+
+  // Ensure Prettier runs
+  "prettier.enable": true,
+  "prettier.requireConfig": false,
+  "prettier.useEditorConfig": false,
+  "prettier.resolveGlobalModules": true,
+  "prettier.endOfLine": "lf",
+
+  "git.enableStatusBarSync": false,
+  "git.confirmSync": true,
+  "cSpell.words": ["dequal", "eslintcache", "Trost", "tsparser", "usehooks"],
+
+  // Set CSS files to use Tailwind CSS language mode for @theme and other Tailwind directives
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
+}
