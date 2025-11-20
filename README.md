@@ -1,10 +1,4 @@
-# README
-
 Hello! Welcome to the Advisor's Excel coding challenge. The goal of this exercise is to give us an idea of how you approach problems, utilize existing code and write your own code. When you complete the challenge, our team will review your code and if accepted, we will meet for an interview in which we will discuss your work and review with you.
-
-## TEMP
-
-Temporary text to satisfy lint rules
 
 ### Prerequisites
 
