@@ -28,3 +28,17 @@ VALUES
     (3, 'Jills Credit', -3000, 'credit', 10000),
     (6, 'Bills Credit', -60000, 'credit', 60000),
     (9, 'Nancy Credit', -90000, 'credit', 100000);
+
+
+-- Create transactions table so we can reference it for our transaction and amount calculations rather than rely on caching or memory
+DROP TABLE IF EXISTS transactions;
+CREATE TABLE transactions (
+    id SERIAL PRIMARY KEY,
+    account_id INTEGER NOT NULL, 
+    type VARCHAR NOT NULL,
+    amount INTEGER NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES accounts(account_number)
+);
+
+   
