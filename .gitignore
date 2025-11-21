@@ -5,3 +5,7 @@
 # Claude files
 CLAUDE.md
 .clinerules
+
+
+# Docker scripts to easily update/clean api and postgreSQL
+scripts/*
