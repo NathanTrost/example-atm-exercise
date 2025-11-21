@@ -97,6 +97,7 @@ router.put(
         request.params.accountID,
         request.body.amount
       );
+
       return response.status(200).json(updatedAccount);
     } catch (err) {
       if (err instanceof Error) {

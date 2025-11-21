@@ -13,6 +13,7 @@ export const TRANSACTION_ERROR_CODES: Record<string, string> = {
   "number.base": "INVALID_TYPE",
   "any.required": "REQUIRED_FIELD",
 
+  // NOTE: Will need to remove, saving this for now for memory based logic
   //   INSUFFICIENT_FUNDS: {
   //     code: "INSUFFICIENT_FUNDS",
   //     message: "You do not have sufficient funds for this withdrawal",
