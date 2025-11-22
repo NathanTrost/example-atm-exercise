@@ -1,25 +1,39 @@
 import express, { Request, Response } from "express";
 import Joi, { Schema } from "joi";
 import { getAccount } from "../handlers/accountHandler";
+import { AppError, ErrorCode, JoiErrorMap } from "../const/errors";
 
 const router = express.Router();
 
 const getAccountSchema: Schema = Joi.string().required();
 
 router.get("/:accountID", async (request: Request, response: Response) => {
-  const {error} = getAccountSchema.validate(request.params.accountID);
-  
+  const { error } = getAccountSchema.validate(request.params.accountID);
+
   if (error) {
-    return response.status(400).send(error.details[0].message);
+    const errorType = error.details[0].type;
+    const code = JoiErrorMap[errorType] || ErrorCode.VALIDATION_ERROR;
+    return response.status(400).json({
+      error: error.details[0].message,
+      code,
+    });
   }
 
   try {
     const account = await getAccount(request.params.accountID);
-    response.send(account);
+    response.json(account);
   } catch (err) {
-    response.status(404).send({"error": "Account not found"});
+    if (err instanceof AppError) {
+      return response.status(err.statusCode).json({
+        error: err.message,
+        code: err.code,
+      });
+    }
+    return response.status(404).json({
+      error: "Account not found",
+      code: ErrorCode.ACCOUNT_NOT_FOUND,
+    });
   }
 });
 
 export default router;
-

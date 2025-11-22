@@ -6,8 +6,8 @@ import {
   MAX_INDIVIDUAL_WITHDRAWAL_LIMIT,
   MIN_INDIVIDUAL_DEPOSIT,
   WITHDRAWAL_INCREMENT,
-  TRANSACTION_ERROR_CODES,
 } from "../const/transactionLimits";
+import { AppError, ErrorCode, JoiErrorMap } from "../const/errors";
 
 const router = express.Router();
 
@@ -50,9 +50,10 @@ router.put(
 
     if (error) {
       const errorType = error.details[0].type;
+      const code = JoiErrorMap[errorType] || ErrorCode.VALIDATION_ERROR;
       return response.status(400).json({
         error: error.details[0].message,
-        code: TRANSACTION_ERROR_CODES[errorType] || "VALIDATION_ERROR",
+        code,
       });
     }
 
@@ -63,18 +64,18 @@ router.put(
       );
       return response.status(200).json(updatedAccount);
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof AppError) {
         console.error("Withdrawal error:", err);
-        return response.status(400).json({
+        return response.status(err.statusCode).json({
           error: err.message,
-          // NOTE: Will remove when done
-          debug: {
-            accountID: request.params.accountID,
-            amount: request.body.amount,
-            amountType: typeof request.body.amount,
-          },
+          code: err.code,
         });
       }
+      console.error("Unexpected withdrawal error:", err);
+      return response.status(500).json({
+        error: "Internal server error",
+        code: ErrorCode.VALIDATION_ERROR,
+      });
     }
   }
 );
@@ -86,9 +87,10 @@ router.put(
 
     if (error) {
       const errorType = error.details[0].type;
+      const code = JoiErrorMap[errorType] || ErrorCode.VALIDATION_ERROR;
       return response.status(400).json({
         error: error.details[0].message,
-        code: TRANSACTION_ERROR_CODES[errorType] || "VALIDATION_ERROR",
+        code,
       });
     }
 
@@ -100,18 +102,18 @@ router.put(
 
       return response.status(200).json(updatedAccount);
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof AppError) {
         console.error("Deposit error:", err);
-        return response.status(400).json({
+        return response.status(err.statusCode).json({
           error: err.message,
-          // NOTE: Will remove when done
-          debug: {
-            accountID: request.params.accountID,
-            amount: request.body.amount,
-            amountType: typeof request.body.amount,
-          },
+          code: err.code,
         });
       }
+      console.error("Unexpected deposit error:", err);
+      return response.status(500).json({
+        error: "Internal server error",
+        code: ErrorCode.VALIDATION_ERROR,
+      });
     }
   }
 );

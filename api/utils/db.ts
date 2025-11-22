@@ -17,7 +17,7 @@ export const getClient = async (): Promise<PoolClient> => {
   return pool.connect();
 };
 
-export const withTransaction = async <T>(
+export const withClientPool = async <T>(
   callback: (client: PoolClient) => Promise<T>
 ): Promise<T> => {
   const client = await pool.connect();

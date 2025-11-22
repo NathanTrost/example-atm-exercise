@@ -11,7 +11,7 @@ CREATE TABLE accounts (
 ALTER TABLE accounts ADD CONSTRAINT verify_type
 CHECK (type IN ('checking', 'savings', 'credit'));
 
--- LOAD DATAS
+-- LOAD DATA
 INSERT INTO accounts 
     (account_number, name, amount, type)
 VALUES
