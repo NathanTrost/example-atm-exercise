@@ -29,6 +29,10 @@ router.get("/:accountID", async (request: Request, response: Response) => {
         code: err.code,
       });
     }
+    console.error("Unexpected account error:", err);
+    if (err instanceof Error) {
+      console.error("Error details:", err.message, err.stack);
+    }
     return response.status(404).json({
       error: "Account not found",
       code: ErrorCode.ACCOUNT_NOT_FOUND,

@@ -72,6 +72,14 @@ router.put(
         });
       }
       console.error("Unexpected withdrawal error:", err);
+      console.error("Error type:", typeof err);
+      console.error("Error constructor:", err?.constructor?.name);
+      if (err instanceof Error) {
+        console.error("Error message:", err.message);
+        console.error("Error stack:", err.stack);
+      } else {
+        console.error("Non-Error thrown:", err);
+      }
       return response.status(500).json({
         error: "Internal server error",
         code: ErrorCode.VALIDATION_ERROR,
@@ -110,6 +118,14 @@ router.put(
         });
       }
       console.error("Unexpected deposit error:", err);
+      console.error("Error type:", typeof err);
+      console.error("Error constructor:", err?.constructor?.name);
+      if (err instanceof Error) {
+        console.error("Error message:", err.message);
+        console.error("Error stack:", err.stack);
+      } else {
+        console.error("Non-Error thrown:", err);
+      }
       return response.status(500).json({
         error: "Internal server error",
         code: ErrorCode.VALIDATION_ERROR,

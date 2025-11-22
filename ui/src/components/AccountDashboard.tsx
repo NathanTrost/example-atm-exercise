@@ -12,6 +12,10 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [account, setAccount] = useState(props.account);
+  const [errors, setErrors] = useState<{
+    deposit: string | undefined;
+    withdrawal: string | undefined;
+  }>({ deposit: undefined, withdrawal: undefined });
 
   const { signOut } = props;
 
