@@ -38,11 +38,9 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
   const depositFunds = async (): Promise<void> => {
     const validationError = validateDeposit(depositAmount);
     if (validationError) {
-      // NOTE: remove when ready, but testing backend
       console.warn("Deposit Input: User-based validation Failed");
-      alert("FE deposit error: " + validationError);
       setErrors((prev) => ({ ...prev, deposit: validationError }));
-      // return
+      return;
     }
 
     const requestOptions = {
@@ -114,11 +112,9 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
     const validationError = validateWithdrawal(withdrawAmount);
 
     if (validationError) {
-      // NOTE: remove when ready, but testing backend
       console.warn("Withdraw Input: User-based validation Failed");
       setErrors((prev) => ({ ...prev, withdrawal: validationError }));
-      alert("FE withdraw error: " + validationError);
-      // return
+      return;
     }
 
     const requestOptions = {

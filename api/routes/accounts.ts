@@ -8,7 +8,7 @@ const router = express.Router();
 const getAccountSchema: Schema = Joi.string().required();
 
 router.get("/:accountNumber", async (request: Request, response: Response) => {
-  const { error } = getAccountSchema.validate(request.params.accountID);
+  const { error } = getAccountSchema.validate(request.params.accountNumber);
 
   if (error) {
     const errorType = error.details[0].type;
@@ -20,7 +20,7 @@ router.get("/:accountNumber", async (request: Request, response: Response) => {
   }
 
   try {
-    const account = await getAccount(request.params.accountID);
+    const account = await getAccount(request.params.accountNumber);
     response.json(account);
   } catch (err) {
     if (err instanceof AppError) {

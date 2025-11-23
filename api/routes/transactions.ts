@@ -55,7 +55,7 @@ router.put(
 
     try {
       const updatedAccount = await withdrawal(
-        request.params.accountID,
+        request.params.accountNumber,
         request.body.amount
       );
       return response.status(200).json(updatedAccount);
@@ -100,7 +100,7 @@ router.put(
 
     try {
       const updatedAccount = await deposit(
-        request.params.accountID,
+        request.params.accountNumber,
         request.body.amount
       );
 
