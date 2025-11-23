@@ -2,6 +2,7 @@ export type AccountType = "checking" | "savings" | "credit";
 export type TransactionType = "deposit" | "withdraw";
 
 export type Account = {
+  id: string;
   account_number: string;
   name: string;
   amount: number;
@@ -11,7 +12,7 @@ export type Account = {
 
 export type Transaction = {
   id: string;
-  account_id: string; // associated with Account's account_number
+  account_id: string;
   type: TransactionType;
   timestamp: Date;
 };

@@ -21,11 +21,6 @@
     "editor.formatOnSaveMode": "file"
   },
 
-  // Disable CSS validation warnings for Tailwind directives
-  "css.validate": false,
-  "less.validate": false,
-  "scss.validate": false,
-
   // Ensure Prettier runs
   "prettier.enable": true,
   "prettier.requireConfig": false,
@@ -35,10 +30,13 @@
 
   "git.enableStatusBarSync": false,
   "git.confirmSync": true,
-  "cSpell.words": ["dequal", "eslintcache", "Trost", "tsparser", "usehooks"],
-
-  // Set CSS files to use Tailwind CSS language mode for @theme and other Tailwind directives
-  "files.associations": {
-    "*.css": "tailwindcss"
-  }
+  "cSpell.words": [
+    "dequal",
+    "eslintcache",
+    "initdb",
+    "PGDATA",
+    "Trost",
+    "tsparser",
+    "usehooks"
+  ]
 }

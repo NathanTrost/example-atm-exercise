@@ -1,7 +1,8 @@
 -- CREATE TABLE
 DROP TABLE IF EXISTS accounts;
 CREATE TABLE accounts (
-    account_number INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    account_number INTEGER UNIQUE NOT NULL,
     name VARCHAR NOT NULL,
     amount INTEGER NOT NULL,
     type VARCHAR NOT NULL,
@@ -31,15 +32,14 @@ VALUES
 
 
 -- Create transactions table so we can reference it for our transaction and amount calculations rather than rely on caching or memory
--- TODO: Update type to transaction_type, will require rebuild
 DROP TABLE IF EXISTS transactions;
 CREATE TABLE transactions (
     id SERIAL PRIMARY KEY,
-    account_id INTEGER NOT NULL, 
-    type VARCHAR NOT NULL, 
+    account_id INTEGER NOT NULL,
     amount INTEGER NOT NULL,
+    type VARCHAR NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (account_id) REFERENCES accounts(account_number)
+    FOREIGN KEY (account_id) REFERENCES accounts(id)
 );
 
    

@@ -21,7 +21,7 @@
 
 - I'd add testing to both the front and back end
 - I'd update all packages to the most modern version, especially to eliminate the vulnerabilities discovered on install
-- I'd wrap the entire project in something like vite that would allow for me to run both packages locally and view up to date changes
+- I'd wrap the entire project in something like vite that would allow for me to run both packages locally and view up to date changes when working with docker
 - I only added basic error styling to the inputs, I would add some further styling to give it a bit of a pop
 - I'd add error specific language on the inputs
 

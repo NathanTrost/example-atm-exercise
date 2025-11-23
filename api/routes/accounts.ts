@@ -7,7 +7,7 @@ const router = express.Router();
 
 const getAccountSchema: Schema = Joi.string().required();
 
-router.get("/:accountID", async (request: Request, response: Response) => {
+router.get("/:accountNumber", async (request: Request, response: Response) => {
   const { error } = getAccountSchema.validate(request.params.accountID);
 
   if (error) {

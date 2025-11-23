@@ -17,11 +17,9 @@ const depositTransactionSchema: Schema = Joi.object({
     .max(MAX_INDIVIDUAL_DEPOSIT)
     .required()
     .messages({
-      "number.min":
-        "Deposit '{#key} must exceed ${#limit}. Received ${#value}.",
-      "number.max":
-        "Deposit '{#key} must not exceed ${#limit}. Received ${#value}.",
-      "any.required": "Deposit '{#key} field is required.",
+      "number.min": "Deposit Must exceed ${#limit}. Received ${#value}.",
+      "number.max": "Deposit Must not exceed ${#limit}. Received ${#value}.",
+      "any.required": "Field is required.",
     }),
 });
 
@@ -34,17 +32,15 @@ const withdrawalTransactionSchema: Schema = Joi.object({
     .label("Withdrawal 'amount'")
     .messages({
       "number.multiple":
-        "Withdrawal '{#key} must be in ${#base} increments. Received ${#value}.",
-      "number.min":
-        "Withdrawal '{#key} must exceed ${#limit}. Received ${#value}.",
-      "number.max":
-        "Withdrawal '{#key} must not exceed ${#limit}. Received ${#value}.",
-      "any.required": "Withdrawal '{#key}' field is required.",
+        "Withdrawal Must be in ${#base} increments. Received ${#value}.",
+      "number.min": "Withdrawal Must exceed ${#limit}. Received ${#value}.",
+      "number.max": "Withdrawal Must not exceed ${#limit}. Received ${#value}.",
+      "any.required": "Field is required.",
     }),
 });
 
 router.put(
-  "/:accountID/withdraw",
+  "/:accountNumber/withdraw",
   async (request: Request, response: Response) => {
     const { error } = withdrawalTransactionSchema.validate(request.body);
 
@@ -89,7 +85,7 @@ router.put(
 );
 
 router.put(
-  "/:accountID/deposit",
+  "/:accountNumber/deposit",
   async (request: Request, response: Response) => {
     const { error } = depositTransactionSchema.validate(request.body);
 

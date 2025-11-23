@@ -30,6 +30,7 @@
   text-align: center;
 }
 
-.withdraw-card h3, .deposit-card h3 {
+.withdraw-card h3,
+.deposit-card h3 {
   text-align: center;
 }
