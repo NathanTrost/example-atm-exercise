@@ -165,7 +165,7 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
           Sign Out
         </Button>
       </div>
-      <h2>Balance: ${account.amount}</h2>
+      <h2>Balance: ${account.amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
       <Grid container spacing={2} padding={2}>
         <Grid item xs={6}>
           <Card className="deposit-card">

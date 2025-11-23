@@ -114,7 +114,7 @@ export const withdrawal = async (
     }
 
     await createTransactionLog(account.id, amount, "withdraw", client);
-    return { ...account, amount: projectedBalance };
+    return { ...account, amount: Math.round(projectedBalance * 100) / 100 };
   });
 };
 
@@ -162,6 +162,6 @@ export const deposit = async (
 
     await createTransactionLog(account.id, amount, "deposit", client);
 
-    return { ...account, amount: projectedBalance };
+    return { ...account, amount: Math.round(projectedBalance * 100) / 100 };
   });
 };
