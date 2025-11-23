@@ -22,7 +22,7 @@ export const getAccount = async (
       );
 
   if (res.rowCount === 0) {
-    throw new AppError(ErrorCode.ACCOUNT_NOT_FOUND, "Account not found");
+    throw new AppError(ErrorCode.ACCOUNT_NOT_FOUND, "Account not found.");
   }
 
   return res.rows[0];

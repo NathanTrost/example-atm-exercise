@@ -27,10 +27,10 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
       return "Must be greater than 0";
     }
     if (amount > 1000) {
-      return "Cannot deposit more than $1,000 in a single transaction";
+      return "Cannot deposit more than $1,000 in a single transaction.";
     }
     if (account.type === "credit" && account.amount + amount > 0) {
-      return "Cannot deposit in excess of credit limit";
+      return `Cannot deposit in excess of owed credit amount.`;
     }
     return;
   };
@@ -38,7 +38,7 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
   const depositFunds = async (): Promise<void> => {
     const validationError = validateDeposit(depositAmount);
     if (validationError) {
-      console.warn("Deposit Input: User-based validation Failed");
+      console.warn("Deposit Input: User-based validation Failed.");
       setErrors((prev) => ({ ...prev, deposit: validationError }));
       return;
     }
@@ -84,10 +84,10 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
 
   const validateWithdrawal = (amount: number): string | undefined => {
     if (!amount || amount <= 0) {
-      return "Must be greater than 0";
+      return "Must be greater than 0.";
     }
     if (amount > 200) {
-      return "Cannot withdraw more than $200 in a single transaction";
+      return "Cannot withdraw more than $200 in a single transaction.";
     }
     if (amount % 5 !== 0) {
       return "Must be in $5 increments.";
@@ -101,8 +101,8 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
 
     if (amount > maxWithdrawal) {
       return account.type === "credit"
-        ? "Insufficient credit limit"
-        : "Insufficient funds";
+        ? "Insufficient credit limit."
+        : "Insufficient funds.";
     }
 
     return;
@@ -112,7 +112,7 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
     const validationError = validateWithdrawal(withdrawAmount);
 
     if (validationError) {
-      console.warn("Withdraw Input: User-based validation Failed");
+      console.warn("Withdraw Input: User-based validation Failed.");
       setErrors((prev) => ({ ...prev, withdrawal: validationError }));
       return;
     }
@@ -149,7 +149,7 @@ export const AccountDashboard = (props: AccountDashboardProps) => {
       }
       setErrors((prev) => ({ ...prev, withdrawal: undefined }));
     } catch (err) {
-      console.error(err instanceof Error ? err.message : "Unknown error");
+      console.error(err instanceof Error ? err.message : "Unknown error.");
       setErrors((prev) => ({
         ...prev,
         withdrawal: "Withdrawal failed. Please try again at a later time.",

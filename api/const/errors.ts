@@ -16,7 +16,8 @@ export class AppError extends Error {
   constructor(
     public code: ErrorCode,
     message: string,
-    public statusCode: number = 400
+    public statusCode: number = 400,
+    public data?: Record<string, any>
   ) {
     super(message);
     this.name = "AppError";

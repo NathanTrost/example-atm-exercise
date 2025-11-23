@@ -34,7 +34,7 @@ router.get("/:accountNumber", async (request: Request, response: Response) => {
       console.error("Error details:", err.message, err.stack);
     }
     return response.status(404).json({
-      error: "Account not found",
+      error: "Account not found.",
       code: ErrorCode.ACCOUNT_NOT_FOUND,
     });
   }

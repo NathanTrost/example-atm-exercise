@@ -65,6 +65,7 @@ router.put(
         return response.status(err.statusCode).json({
           error: err.message,
           code: err.code,
+          ...(err.data && { data: err.data }),
         });
       }
       console.error("Unexpected withdrawal error:", err);
@@ -77,7 +78,7 @@ router.put(
         console.error("Non-Error thrown:", err);
       }
       return response.status(500).json({
-        error: "Internal server error",
+        error: "Internal server error.",
         code: ErrorCode.VALIDATION_ERROR,
       });
     }
@@ -111,6 +112,7 @@ router.put(
         return response.status(err.statusCode).json({
           error: err.message,
           code: err.code,
+          ...(err.data && { data: err.data }),
         });
       }
       console.error("Unexpected deposit error:", err);
@@ -123,7 +125,7 @@ router.put(
         console.error("Non-Error thrown:", err);
       }
       return response.status(500).json({
-        error: "Internal server error",
+        error: "Internal server error.",
         code: ErrorCode.VALIDATION_ERROR,
       });
     }

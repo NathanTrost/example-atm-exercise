@@ -1,11 +1,14 @@
-import { MAX_DAILY_WITHDRAWAL_LIMIT } from "../const/transactionLimits";
+import {
+  MAX_DAILY_WITHDRAWAL_LIMIT,
+  WITHDRAWAL_INCREMENT,
+} from "../const/transactionLimits";
 import { AppError, ErrorCode } from "../const/errors";
 import { PoolClient, withClientPool } from "../utils/db";
 import { getAccount } from "./accountHandler";
 import { Account, TransactionType } from "../types";
 
-/** Keep track of successful transactions so we can ensure at a later point that daily limits are not exceeded */
-const createTransaction = async (
+/** Create log as reference to ensure at a later point that daily limits are not exceeded */
+const createTransactionLog = async (
   accountId: string,
   amount: number,
   transactionType: TransactionType,
@@ -39,33 +42,44 @@ const checkDailyWithdrawalLimit = async (
   const projectedSum = Number(dailyWithdrawalSum + amount);
 
   if (projectedSum > MAX_DAILY_WITHDRAWAL_LIMIT) {
+    const remainingWithdrawalLimit =
+      MAX_DAILY_WITHDRAWAL_LIMIT - dailyWithdrawalSum;
     throw new AppError(
       ErrorCode.DAILY_WITHDRAWAL_LIMIT_EXCEEDED,
-      `Daily withdrawal limit of ${MAX_DAILY_WITHDRAWAL_LIMIT} exceeded`
+      `Daily withdrawal limit of ${MAX_DAILY_WITHDRAWAL_LIMIT} exceeded. 
+      You can only withdraw $${remainingWithdrawalLimit}.`,
+      400,
+      { remainingLimit: remainingWithdrawalLimit }
     );
   }
 };
 
 const validateAgainstOverdraft = (
   isCreditAccount: boolean,
-  newBalance: number,
-  creditLimit: number
+  projectedBalance: number,
+  creditLimit: number,
+  currentAmount: number
 ): void => {
-  const isOverdrawnFromAccount = newBalance < 0;
+  const isOverdrawnFromAccount = projectedBalance < 0;
   if (!isOverdrawnFromAccount) {
     return;
   }
   if (isCreditAccount) {
-    if (newBalance + creditLimit < 0) {
+    const projectedAvailableCredit = projectedBalance + creditLimit;
+    if (projectedAvailableCredit < 0) {
+      const remainingAvailableCredit = creditLimit + currentAmount;
+
       throw new AppError(
         ErrorCode.CREDIT_LIMIT_EXCEEDED,
-        "Credit limit exceeded"
+        `Credit limit exceeded. You can withdraw up to $${remainingAvailableCredit}.`,
+        400,
+        { remainingAvailableCredit }
       );
     }
     return;
   }
 
-  throw new AppError(ErrorCode.INSUFFICIENT_FUNDS, "Insufficient funds");
+  throw new AppError(ErrorCode.INSUFFICIENT_FUNDS, "Insufficient funds.");
 };
 
 export const withdrawal = async (
@@ -78,7 +92,12 @@ export const withdrawal = async (
     const creditLimit = isCreditAccount ? account.credit_limit : 0;
     const projectedBalance = Number(account.amount) - amount;
 
-    validateAgainstOverdraft(isCreditAccount, projectedBalance, creditLimit);
+    validateAgainstOverdraft(
+      isCreditAccount,
+      projectedBalance,
+      creditLimit,
+      Number(account.amount)
+    );
 
     await checkDailyWithdrawalLimit(account.id, amount, client);
     const result = await client.query(
@@ -90,11 +109,11 @@ export const withdrawal = async (
     if (result.rowCount === 0) {
       throw new AppError(
         ErrorCode.ACCOUNT_NOT_FOUND,
-        "Account not found or update failed"
+        "Account not found or update failed."
       );
     }
 
-    await createTransaction(account.id, amount, "withdraw", client);
+    await createTransactionLog(account.id, amount, "withdraw", client);
     return { ...account, amount: projectedBalance };
   });
 };
@@ -107,7 +126,7 @@ const validateAgainstCreditOverpayment = (
     if (newBalance > 0) {
       throw new AppError(
         ErrorCode.OVERPAYMENT_NOT_ALLOWED,
-        "Overpayment is not allowed"
+        "Overpayment of limit is not allowed for credit accounts."
       );
     }
     return;
@@ -137,11 +156,11 @@ export const deposit = async (
     if (result.rowCount === 0) {
       throw new AppError(
         ErrorCode.ACCOUNT_NOT_FOUND,
-        "Account not found or update failed"
+        "Account not found or update failed."
       );
     }
 
-    await createTransaction(account.id, amount, "deposit", client);
+    await createTransactionLog(account.id, amount, "deposit", client);
 
     return { ...account, amount: projectedBalance };
   });
